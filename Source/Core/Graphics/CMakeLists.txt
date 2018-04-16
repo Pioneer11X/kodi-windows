@@ -1,5 +1,3 @@
-include(${CMAKE_CURRENT_LIST_DIR}/Buffers/CMakeLists.txt)
-
 FILE(GLOB GraphicsFiles
   "${CMAKE_CURRENT_LIST_DIR}/Shader.hpp"
   "${CMAKE_CURRENT_LIST_DIR}/Shader.cpp"

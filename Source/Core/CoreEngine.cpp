@@ -13,6 +13,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/regex.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/regex.hpp>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -123,6 +124,45 @@ namespace kodi {
             ShaderDictionary[fileName.first] = new Shader(vertexShaderFiles[fileName.first].c_str(), fragmentShaderFiles[fileName.first].c_str());
             // TODO: Moththam ayyipoyina tharuvaatha veetini vidudhala cheseyyi.
         }
+
+		/***************************************************************
+			మళ్ళీ boost వాడి మెత్తం వున్న Texture లు అన్నీ ఒకేసారి load చేసెయ్యి
+		***************************************************************/
+
+		dirPath = std::string(TEXTURE_FOLDER_PATH);
+
+		directory = boost::filesystem::path(dirPath);
+
+		try {
+			if (boost::filesystem::exists(directory) || boost::filesystem::is_directory(directory)) {
+				for (fs::directory_entry& x : fs::directory_iterator(directory)) {
+					fs::path filePath = x.path();
+					std::string filePathAndName = filePath.generic_string();
+					std::vector<std::string> stringsBrokenDown;
+
+					// boost::cmatch regex_result;
+					boost::algorithm::split_regex(stringsBrokenDown, filePathAndName, boost::regex("(\/Textures\/)"));
+					// boost::regex_match(filePathAndName.c_str(), regex_result, boost::regex("(\/Textures\/(.*)[\.])"));
+					// std::string fileName = stringsBrokenDown[stringsBrokenDown.size()];
+					std::string fileName = stringsBrokenDown[1];
+
+					// TODO: Find a better way, but for now, we split it again.
+					boost::algorithm::split_regex(stringsBrokenDown, fileName, boost::regex("([\.])"));
+
+					fileName = stringsBrokenDown[0];
+					// ఇప్పుడు అన్ని Texture files నీ load చెయ్యి
+					TextureDictionary[fileName] = new Texture(filePathAndName.c_str());
+
+				}
+			}
+		}
+		catch (const fs::filesystem_error& ex) {
+			std::cout << ex.what() << std::endl;
+		}
+
+		/***************************************************************
+			Boost ఇక్కడితో అయిపోయింది
+		****************************************************************/
         
         // set up vertex data (and buffer(s)) and configure vertex attributes
         // ------------------------------------------------------------------
@@ -142,7 +182,7 @@ namespace kodi {
 		std::string test(TEXTURE_FOLDER_PATH);
 		test += "\\container.jpg";
 
-		texture = new Texture(test.c_str());
+		// texture = new Texture(test.c_str());
         
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
@@ -167,6 +207,10 @@ namespace kodi {
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 		glEnableVertexAttribArray(2);
         
+		ShaderDictionary["first"]->use();
+		ShaderDictionary["first"]->setInt("ourTexture", 0);
+		ShaderDictionary["first"]->setInt("ourSecondTexture", 1);
+
         // Ideally return true.
         return true;
         
@@ -187,7 +231,10 @@ namespace kodi {
             
             // Actual Logic for the Game Loop.
             ShaderDictionary["first"]->use();
-			texture->Use();
+			glActiveTexture(GL_TEXTURE0);
+			TextureDictionary["container"]->Use();
+			glActiveTexture(GL_TEXTURE1);
+			TextureDictionary["awesomeface"]->Use();
             glBindVertexArray(VAO);
             // glDrawArrays(GL_TRIANGLES, 0, 6);
 			glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);

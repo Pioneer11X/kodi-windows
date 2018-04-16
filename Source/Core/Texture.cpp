@@ -12,6 +12,7 @@ namespace kodi {
 	Texture::Texture(const char * imagePath) {
 
 		int width, height, nrChannels;
+		GLenum channelToLoadImageAs;
 		stbi_set_flip_vertically_on_load(true);
 
 		unsigned char * data = stbi_load(imagePath, &width, &height, &nrChannels, 0);
@@ -23,7 +24,25 @@ namespace kodi {
 		glGenTextures(1, &textureID);
 
 		glBindTexture(GL_TEXTURE_2D, textureID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_);	// set texture wrapping to GL_REPEAT (default wrapping method)
+		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+		switch (nrChannels)
+		{
+		case 4:
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+			break;
+		case 3:
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		default:
+#if _DEBUG
+			assert("Unknown Channel" + nrChannels);
+#endif
+			channelToLoadImageAs = GL_RGBA;
+			break;
+		}
+
 		glGenerateMipmap(GL_TEXTURE_2D);
 
 		// Free it after creating the texture.
@@ -34,6 +53,10 @@ namespace kodi {
 
 	void Texture::Use() {
 
+		// TODO: Check if the ID Exists or not.
+#if _DEBUG
+		assert(NULL != this);
+#endif
 		glBindTexture(GL_TEXTURE_2D, this->textureID);
 
 	}

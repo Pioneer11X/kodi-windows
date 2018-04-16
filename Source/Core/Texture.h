@@ -8,7 +8,8 @@ namespace kodi {
 
 		unsigned int textureID;
 
-		Texture(const char * imagePath);
+		// The Image Path is the file path and the format, is typically betweem RGBA and RGB.
+		Texture::Texture(const char * imagePath);
 
 		void Use();
 

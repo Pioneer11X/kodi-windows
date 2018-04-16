@@ -34,11 +34,11 @@ namespace kodi {
         
         std::map<std::string, std::string> vertexShaderFiles;
         std::map<std::string, std::string> fragmentShaderFiles;
+
+		// ఒక dictionary చేసి పెట్టు వీటిని. మనం ఒక folder లోంచి ఒకేసారి అన్నీ load చేసి పెట్టుకోవచ్చు
         std::map<std::string, Shader * > ShaderDictionary;
-
-		// ఒక vector చేసి పెట్టు వీటిని. మనం ఒక folder లోంచి ఒకేసారి అన్నీ load చేసి పెట్టుకోవచ్చు
-		Texture * texture;
-
+		std::map<std::string, Texture *> TextureDictionary;
+				
         // ఆ ఒక్క దానికి.
         unsigned int VBO, VAO, EBO;
       

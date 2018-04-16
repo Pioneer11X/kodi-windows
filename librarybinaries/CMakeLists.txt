@@ -11,3 +11,5 @@ target_link_libraries(Kodi-Engine ${CMAKE_CURRENT_LIST_DIR}/SFML/sfml-window.lib
 target_link_libraries(Kodi-Engine ${CMAKE_CURRENT_LIST_DIR}/boost/libboost_regex-vc141-mt-gd-x64-1_66.lib)
 target_link_libraries(Kodi-Engine ${CMAKE_CURRENT_LIST_DIR}/boost/libboost_filesystem-vc141-mt-gd-x64-1_66.lib)
 target_link_libraries(Kodi-Engine ${CMAKE_CURRENT_LIST_DIR}/boost/libboost_system-vc141-mt-gd-x64-1_66.lib)
+
+target_link_libraries(Kodi-Engine ${CMAKE_CURRENT_LIST_DIR}/assimp/assimp-vc140-mt.lib)

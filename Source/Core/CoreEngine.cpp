@@ -139,18 +139,14 @@ namespace kodi {
 			0, 1, 2  // second Triangle
 		};
 
-		int width, height, nrChaneels;
-		stbi_set_flip_vertically_on_load(true);
-
 		std::string test(TEXTURE_FOLDER_PATH);
 		test += "\\container.jpg";
 
-		unsigned char * data = stbi_load( test.c_str(), &width, &height, &nrChaneels, 0);
+		texture = new Texture(test.c_str());
         
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
 		glGenBuffers(1, &EBO);
-		glGenTextures(1, &texture);
 
         // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
         glBindVertexArray(VAO);
@@ -160,12 +156,6 @@ namespace kodi {
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-		glBindTexture(GL_TEXTURE_2D, texture);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-
-		stbi_image_free(data);
         
         // position attribute
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
@@ -197,7 +187,7 @@ namespace kodi {
             
             // Actual Logic for the Game Loop.
             ShaderDictionary["first"]->use();
-			glBindTexture(GL_TEXTURE_2D, texture);
+			texture->Use();
             glBindVertexArray(VAO);
             // glDrawArrays(GL_TRIANGLES, 0, 6);
 			glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);

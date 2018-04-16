@@ -22,6 +22,7 @@
 #include "Frameworks/WindowGLFW.hpp"
 
 #include "Shader.hpp"
+#include "Texture.h"
 
 #include <map>
 
@@ -34,12 +35,12 @@ namespace kodi {
         std::map<std::string, std::string> vertexShaderFiles;
         std::map<std::string, std::string> fragmentShaderFiles;
         std::map<std::string, Shader * > ShaderDictionary;
-        
-        // ఆ ఒక్క దానికి.
-        unsigned int VBO, VAO, EBO;
 
 		// ఒక vector చేసి పెట్టు వీటిని. మనం ఒక folder లోంచి ఒకేసారి అన్నీ load చేసి పెట్టుకోవచ్చు
-		unsigned int texture;
+		Texture * texture;
+
+        // ఆ ఒక్క దానికి.
+        unsigned int VBO, VAO, EBO;
       
     public:
         // Constructor.

@@ -40,30 +40,9 @@ int WINAPI WinMain(HINSTANCE hinstance,
 
 	while (ce.WindowIsOpen()) {
 
-		if (ce.getEvents()->CheckKeyStatus(KEYSTATUS::KB_PRESSED, KEYS::Escape)) {
-			break;
-		}
-
-		if (ce.getEvents()->CheckKeyboardStatus(KEYSTATUS::KB_PRESSED))
-		{
-			if (ce.getEvents()->CheckKeyStatus(KEYSTATUS::KB_PRESSED, KEYS::A))
-			{
-				std::cout << "A pressed" << std::endl;
-
-			}
-		}
-		else if (ce.getEvents()->CheckKeyboardStatus(KEYSTATUS::KB_RELEASED))
-		{
-			std::cout << "Release" << std::endl;
-
-		}
-
-		if (ce.getEvents()->CheckMouseButtonStatus(MOUSE_BUTTONS::MOUSEKEY_ANY, MOUSE_BUTTON_STATUS::MOUSEKEY_PRESSED))
-		{
-			ce.getEvents()->ResetTime();
-		}
-
 		ce.GameLoop();
+
+		ce.HandleInputs();
 
 	}
 

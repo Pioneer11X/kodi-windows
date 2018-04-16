@@ -112,7 +112,13 @@ namespace kodi {
     };
     
     bool KE_SFML::IsWindowOpen() const{
-        return this->window->isOpen();
-    };
+        return (this->windowShouldClose) ? (this->windowShouldClose) : (this->window->isOpen());
+	};
+
+
+	void KE_SFML::WindowShouldClose()
+	{
+		this->windowShouldClose = true;
+	};
     
 }

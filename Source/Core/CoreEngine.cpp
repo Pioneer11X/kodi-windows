@@ -15,8 +15,9 @@
 #include <boost/filesystem.hpp>
 #include <boost/regex.hpp>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 const GLint WIDTH = 600, HEIGHT = 600;
 
@@ -63,6 +64,11 @@ namespace kodi {
             std::cout << "Failed to initialize GLEW" << std::endl;
             return EXIT_FAILURE;
         }
+
+		/***************************************************************
+		3D ఐతే Depth Buffer Enable చెయ్యాలి
+		****************************************************************/
+		glEnable(GL_DEPTH_TEST);
         
         // Define the viewport dimensions
         glViewport( 0, 0, this->frameworkPtr->screenWidth, this->frameworkPtr->screenHeight );
@@ -163,15 +169,50 @@ namespace kodi {
 		/***************************************************************
 			Boost ఇక్కడితో అయిపోయింది
 		****************************************************************/
-        
-        // set up vertex data (and buffer(s)) and configure vertex attributes
-        // ------------------------------------------------------------------
-        float vertices[] = {
-            // positions         // colors			// Tex Coords.
-			0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f,	1.0f, 1.0f, // top right
-            0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,	1.0f, 0.0f,// bottom right
-            -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,	0.0f, 0.0f, // bottom left
-            -0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f,	0.0f, 1.0f,  // top left
+
+
+		float cubeVertices[] = {
+			-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+			0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+			0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+			0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+			0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+			0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+			0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+			-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+			-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+			-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+			-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+			0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+			0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+			0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+			0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+			0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+			0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+			0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+			0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+			0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+			-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+			0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+			0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+			0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+			-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+			-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 		};
 
 		unsigned int indices[] = {  // note that we start from 0!
@@ -186,26 +227,21 @@ namespace kodi {
         
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
-		glGenBuffers(1, &EBO);
+		// glGenBuffers(1, &EBO);
 
         // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
         glBindVertexArray(VAO);
         
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
         
         // position attribute
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);					
-        // color attribute								
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-        glEnableVertexAttribArray(1);					
+
 		// Texture Attribute.							
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(1);
         
 		ShaderDictionary["first"]->use();
 		ShaderDictionary["first"]->setInt("ourTexture", 0);
@@ -221,23 +257,36 @@ namespace kodi {
         
         bool returnValue = this->frameworkPtr->PollEvents();
         
-        
-        
         // Clear the colorbuffer
         glClearColor( 0.2f, 0.3f, 0.3f, 1.0f );
-        glClear( GL_COLOR_BUFFER_BIT );
-        
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         {
             
             // Actual Logic for the Game Loop.
             ShaderDictionary["first"]->use();
+
+			// Bind and Activate Textures.
 			glActiveTexture(GL_TEXTURE0);
 			TextureDictionary["container"]->Use();
 			glActiveTexture(GL_TEXTURE1);
 			TextureDictionary["awesomeface"]->Use();
-            glBindVertexArray(VAO);
-            // glDrawArrays(GL_TRIANGLES, 0, 6);
-			glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
+			glBindVertexArray(VAO);
+
+			// create transformations
+			glm::mat4 model;
+			glm::mat4 view;
+			glm::mat4 projection;
+			model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
+			view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+			projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+			// retrieve the matrix uniform locations
+			ShaderDictionary["first"]->setMat4("model", model);
+			ShaderDictionary["first"]->setMat4("view", view);
+			ShaderDictionary["first"]->setMat4("projection", projection);
+			
+			// render box
+			glDrawArrays(GL_TRIANGLES, 0, 36);
             
         }
         
@@ -256,6 +305,32 @@ namespace kodi {
         this->frameworkPtr->CleanUp();
         
     }
+
+	void CoreEngine::HandleInputs()
+	{
+		if (this->getEvents()->CheckKeyStatus(KEYSTATUS::KB_PRESSED, KEYS::Escape)) {
+			this->frameworkPtr->WindowShouldClose();
+		}
+
+		if (this->getEvents()->CheckKeyboardStatus(KEYSTATUS::KB_PRESSED))
+		{
+			if (this->getEvents()->CheckKeyStatus(KEYSTATUS::KB_PRESSED, KEYS::A))
+			{
+				std::cout << "A pressed" << std::endl;
+
+			}
+		}
+		else if (this->getEvents()->CheckKeyboardStatus(KEYSTATUS::KB_RELEASED))
+		{
+			std::cout << "Release" << std::endl;
+
+		}
+
+		if (this->getEvents()->CheckMouseButtonStatus(MOUSE_BUTTONS::MOUSEKEY_ANY, MOUSE_BUTTON_STATUS::MOUSEKEY_PRESSED))
+		{
+			this->getEvents()->ResetTime();
+		}
+	}
     
     bool CoreEngine::WindowIsOpen( ) const
     {

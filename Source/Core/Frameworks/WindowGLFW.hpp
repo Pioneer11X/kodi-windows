@@ -26,6 +26,7 @@ namespace kodi {
         void SwapBuffers();
         void CleanUp();
         bool IsWindowOpen() const;
+		void WindowShouldClose();
         
         static void KeyCallback( GLFWwindow *window, int key, int scancode, int action, int mods );
         static void MouseButtonCallback( GLFWwindow *window, int button, int action, int mods );

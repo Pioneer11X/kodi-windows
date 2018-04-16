@@ -21,8 +21,8 @@
 #include "Frameworks/WindowSFML.hpp"
 #include "Frameworks/WindowGLFW.hpp"
 
-#include "Shader.hpp"
-#include "Texture.h"
+#include "Graphics/Shader.hpp"
+#include "Graphics/Texture.h"
 
 #include <map>
 
@@ -59,6 +59,8 @@ namespace kodi {
         void Cleanup();
         
         CoreEvents *getEvents( ) { return this->coreEvents; }
+
+		void HandleInputs();
         
     private:
 

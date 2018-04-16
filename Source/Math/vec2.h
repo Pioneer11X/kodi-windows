@@ -11,21 +11,26 @@
 
 namespace kodi
 {
-    // vector with 2 pieces of data
-    template <typename T>
-    struct vec2
-    {
-        typedef T value_type;
+
+	namespace math {
+
+		// vector with 2 pieces of data
+		template <typename T>
+		struct vec2
+		{
+			typedef T value_type;
         
-        // unify the different sets of data in one area in memory
-        union
-        {
-            struct { T x, y; };
-            struct { T r, g; };
-            struct { T width, height; };
-            struct { T major, minor; };
-        };
-    };
+			// unify the different sets of data in one area in memory
+			union
+			{
+				struct { T x, y; };
+				struct { T r, g; };
+				struct { T width, height; };
+				struct { T major, minor; };
+			};
+		};
+
+	}
 }
 
 

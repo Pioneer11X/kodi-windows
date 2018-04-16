@@ -1,5 +1,6 @@
 include(${CMAKE_CURRENT_LIST_DIR}/Events/CMakeLists.txt)
 include(${CMAKE_CURRENT_LIST_DIR}/FrameWorks/CMakeLists.txt)
+include(${CMAKE_CURRENT_LIST_DIR}/Graphics/CMakeLists.txt)
 
 FILE(GLOB CoreFiles
   "${CMAKE_CURRENT_LIST_DIR}/CoreEngine.cpp"

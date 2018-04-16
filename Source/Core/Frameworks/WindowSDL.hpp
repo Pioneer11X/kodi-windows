@@ -27,7 +27,8 @@ namespace kodi {
         void SwapBuffers();
         void CleanUp();
         bool IsWindowOpen() const;
-        
+		void WindowShouldClose();
+
     private:
         SDL_GLContext context;
         SDL_Window *window;

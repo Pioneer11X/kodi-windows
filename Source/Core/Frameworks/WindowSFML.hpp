@@ -26,6 +26,7 @@ namespace kodi {
         void SwapBuffers();
         void CleanUp();
         bool IsWindowOpen() const;
+		void WindowShouldClose();
         
     private:
         sf::Window * window;
@@ -33,6 +34,8 @@ namespace kodi {
         sf::Clock clock;
         
         sf::Uint64 startingTime;
+
+		bool windowShouldClose = false;
         
     };
     

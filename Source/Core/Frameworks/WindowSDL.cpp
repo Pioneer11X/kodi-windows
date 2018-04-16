@@ -147,5 +147,10 @@ namespace kodi {
     bool KE_SDL::IsWindowOpen() const{
         return this->isOpen;
     }
+
+	void KE_SDL::WindowShouldClose()
+	{
+		this->isOpen = false;
+	}
     
 }

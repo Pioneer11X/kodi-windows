@@ -98,6 +98,11 @@ namespace kodi {
     bool KE_GLFW::IsWindowOpen() const{
         return !glfwWindowShouldClose(this->window);
     }
+
+	void KE_GLFW::WindowShouldClose()
+	{
+		glfwSetWindowShouldClose(this->window, true);
+	}
     
     void KE_GLFW::KeyCallback( GLFWwindow *window, int key, int scancode, int action, int mods )
     {

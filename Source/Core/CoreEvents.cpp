@@ -49,8 +49,8 @@ namespace kodi
         
         this->mouseStatus = MOUSE_STATUS::MOUSE_NOTHING;
         
-        this->scrollOffset = vec2<float> { 0.0f, 0.0f };
-        this->mousePosition = vec2<float> { 0.0f, 0.0f };
+        this->scrollOffset = glm::vec2 { 0.0f, 0.0f };
+        this->mousePosition = glm::vec2 { 0.0f, 0.0f };
         
         this->isInWindow = false;
         
@@ -148,24 +148,24 @@ namespace kodi
         return this->eventObject->GetMouseButtonNumber( key );
     }
     
-    const vec2<float>& CoreEvents::GetScrollOffset( ) const
+    const glm::vec2& CoreEvents::GetScrollOffset( ) const
     {
         return this->scrollOffset;
     }
     
     void CoreEvents::SetScrollOffset( float x, float y )
     {
-        this->scrollOffset = vec2<float> { x, y };
+        this->scrollOffset = glm::vec2 { x, y };
     }
     
-    const vec2<float>& CoreEvents::GetMousePosition( ) const
+    const glm::vec2& CoreEvents::GetMousePosition( ) const
     {
         return this->mousePosition;
     }
     
     void CoreEvents::SetMousePosition( float x, float y )
     {
-        this->mousePosition = vec2<float> { x, y };
+        this->mousePosition = glm::vec2 { x, y };
     }
     
     bool CoreEvents::IsMouseCursorInWindow( )

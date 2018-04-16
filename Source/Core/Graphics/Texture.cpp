@@ -1,9 +1,11 @@
 #pragma once
 #include "Texture.h"
 #include <string>
-#include "stb_image.h"
 #include <assert.h>
 #include <GL/glew.h>
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 namespace kodi {
 

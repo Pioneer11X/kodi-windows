@@ -18,7 +18,7 @@
 #include "Events/EventGLFW.hpp"
 #include "Events/EventSFML.hpp"
 
-#include "../Math/vec2.h"
+#include <glm/vec2.hpp>
 
 namespace kodi
 {
@@ -47,10 +47,10 @@ namespace kodi
         bool CheckMouseButtonStatus( int button, int buttonStatus );
         void SetMouseButtonStatus( int button, int buttonStatus );
         
-        const vec2<float>& GetScrollOffset( ) const;
+        const glm::vec2& GetScrollOffset( ) const;
         void SetScrollOffset( float x, float y );
         
-        const vec2<float>& GetMousePosition( ) const;
+        const glm::vec2& GetMousePosition( ) const;
         void SetMousePosition( float x, float y );
         
         bool IsMouseCursorInWindow( );
@@ -90,8 +90,8 @@ namespace kodi
         
         int keysStatus[101];
         int mouseButtonsStatus[3];
-        vec2<float> scrollOffset;
-        vec2<float> mousePosition;
+        glm::vec2 scrollOffset;
+        glm::vec2 mousePosition;
         bool isInWindow;
         
         double time, explicitTime, cumulativeTime;

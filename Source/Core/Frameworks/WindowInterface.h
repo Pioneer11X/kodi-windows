@@ -49,6 +49,8 @@ namespace kodi {
         virtual void CleanUp() = 0;
         
         virtual bool IsWindowOpen() const = 0;
+
+		virtual void WindowShouldClose() = 0;
         
         // A Virtual function to set the Window size when we initialies the window.
         void SetWindowParameters(GLint _width, GLint _height, std::string _title);
